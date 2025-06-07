@@ -3,7 +3,7 @@ from boto3.session import Session
 from utils import load_env_variables
 
 
-def retrieve_top_k_documents(query, documents_no=5):
+def retrieve_top_k_documents(session, query, documents_no=5):
     # initialize the Bedrock Agent Runtime client
     client = session.client("bedrock-agent-runtime")
 
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     session = Session(
         profile_name=env_variables["profile_name"], region_name=env_variables["region_name"]
     )
-    retrieve_top_k_documents("What is NS?", 3)
+    retrieve_top_k_documents(session, "What is NS?", 3)
