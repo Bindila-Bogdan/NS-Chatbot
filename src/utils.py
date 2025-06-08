@@ -3,7 +3,10 @@ This module provides utility functions such as loading AWS-related environment v
 """
 
 import os
+import boto3
 from dotenv import load_dotenv
+
+from config import BUCKET_NAME, S3_KEY, ZIP_PATH
 
 
 def load_env_variables():
@@ -27,3 +30,24 @@ def load_env_variables():
     env_variables["knowledge_base_id"] = os.getenv("KNOWLEDGE_BASE_ID", None)
 
     return env_variables
+
+
+def load_lambda_zip():
+    """
+    Loads the zip file with the Lambda function to S3.
+    """
+
+    # get the s3 client
+    env_variables = load_env_variables()
+    session = boto3.Session(
+        profile_name=env_variables["profile_name"],
+        region_name=env_variables["region_name"],
+    )
+    s3 = session.client("s3")
+
+    s3.upload_file(ZIP_PATH, BUCKET_NAME, S3_KEY)
+    print("The zip of the Lambda function is now uploaded to S3.")
+
+
+if __name__ == "__main__":
+    load_lambda_zip()
