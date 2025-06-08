@@ -6,12 +6,11 @@ indexing and search, and a foundational LLM for answering questions.
 
 import sys
 import json
-from boto3.session import Session
 
 sys.path.append(".")
 
-from src.utils import load_env_variables
-from src.config import (
+from ns_chatbot import NSChatbot
+from config import (
     LLM_ID,
     MAX_OUTPUT_TOKENS,
     LLM_TEMPERATURE,
@@ -21,21 +20,18 @@ from src.config import (
 )
 
 
-class NSChatbotRAG:
+class NSChatbotRAG(NSChatbot):
     """
     A RAG (Retrieval Augmented Generation) chatbot with built-in memory for NS (Dutch Railways)
     which answers questions based on k retrieved documents from the knowledge base.
     """
 
     def __init__(self):
-        # get the environment variables from the .env file and start a session
-        self.env_variables = load_env_variables()
-        self.session = Session(
-            profile_name=self.env_variables["profile_name"],
-            region_name=self.env_variables["region_name"],
-        )
-        # initialize the Bedrock Agent Runtime client needed for retrieval
-        self.agent_runtime_client = self.session.client("bedrock-agent-runtime")
+        """
+        Initialize the NSChatbotRAG instance.
+        """
+
+        super().__init__()
         # initialize the Bedrock Runtime client needed to call the LLM
         self.runtime_client = self.session.client("bedrock-runtime")
         # initialize conversation history
@@ -102,7 +98,7 @@ class NSChatbotRAG:
 
         return retrieved_documents
 
-    def call_llm(self, query, retrieved_documents=None):
+    def ask_chatbot(self, query, retrieved_documents=None):
         """
         Invokes the LLM (by default Claude 3.5 Haiku) with a given query, incorporating retrieved
         documents as context and maintaining conversation history. The conversation history is
@@ -200,16 +196,16 @@ if __name__ == "__main__":
 
     FIRST_QUERY = "What is NS?"
     retrieved_docs = ns_chatbot_rag.retrieve_top_k_documents(FIRST_QUERY, True)
-    print(ns_chatbot_rag.call_llm(FIRST_QUERY, retrieved_docs))
+    print(ns_chatbot_rag.ask_chatbot(FIRST_QUERY, retrieved_docs))
 
     # test what happens when a question is asked without retrieved documents
     SECOND_QUERY = "And what is their main goal?"
-    print(ns_chatbot_rag.call_llm(SECOND_QUERY))
+    print(ns_chatbot_rag.ask_chatbot(SECOND_QUERY))
 
     # test the memory of the chatbot
     THIRD_QUERY = "Can you tell me more about that?"
-    print(ns_chatbot_rag.call_llm(THIRD_QUERY))
+    print(ns_chatbot_rag.ask_chatbot(THIRD_QUERY))
 
     # test if clearning the conversation history works
     ns_chatbot_rag.reset_conversation()
-    print(ns_chatbot_rag.call_llm(THIRD_QUERY))
+    print(ns_chatbot_rag.ask_chatbot(THIRD_QUERY))
