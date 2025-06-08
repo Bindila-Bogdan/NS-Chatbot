@@ -102,10 +102,10 @@ class NSChatbotAgent(NSChatbot):
                 response_text = re.sub(r"\n{3,}", "\n\n", response_text)
 
             if len(citations) != 0:
-                citations_text += "Citations:\n"
+                citations_text += "**Citations:**\n"
 
                 for citation in citations:
-                    citations_text += f"Document {citation[0]} at page {citation[1]}\n"
+                    citations_text += f"- {citation[0]}, page {citation[1]}\n"
 
         except Exception as e:
             print(f"An error occurred: {e}")

@@ -55,6 +55,9 @@ class NSChatbotRAG(NSChatbot):
             A list of dictionaries, where each dictionary represents a retrieved document
             and contains 'document_name', 'page_number', and 'content'.
             Returns an empty list if an error occurs during retrieval.
+        str
+            A string which contains the name and page of the retrieved document, needed to be
+            displayed to the user.
 
         Raises
         ------
@@ -96,7 +99,13 @@ class NSChatbotRAG(NSChatbot):
             if verbose:
                 print(f"{content}\nFrom: {document_name} at page {page_number}\n")
 
-        return retrieved_documents
+        retrieved_documents_metadata = "**Retrieved documents:**\n"
+
+        for retrieved_document in retrieved_documents:
+            retrieved_documents_metadata += f"- {retrieved_document['document_name']}"
+            retrieved_documents_metadata += f", page {retrieved_document['page_number']}\n"
+
+        return retrieved_documents, retrieved_documents_metadata
 
     def ask_chatbot(self, query, retrieved_documents=None):
         """
@@ -195,7 +204,7 @@ if __name__ == "__main__":
     ns_chatbot_rag = NSChatbotRAG()
 
     FIRST_QUERY = "What is NS?"
-    retrieved_docs = ns_chatbot_rag.retrieve_top_k_documents(FIRST_QUERY, True)
+    retrieved_docs, _ = ns_chatbot_rag.retrieve_top_k_documents(FIRST_QUERY, True)
     print(ns_chatbot_rag.ask_chatbot(FIRST_QUERY, retrieved_docs))
 
     # test what happens when a question is asked without retrieved documents
