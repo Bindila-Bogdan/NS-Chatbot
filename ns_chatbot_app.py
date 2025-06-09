@@ -12,9 +12,6 @@ from src.ns_chatbot_rag import NSChatbotRAG
 from src.ns_chatbot_agent import NSChatbotAgent
 
 
-print("Its running!!")
-
-
 def generate_response(query):
     """Generates a response from the chatbot based on the given query. It dynamically handles
     the interaction with the RAG-based chatbot or with the agent-based chatbot.
