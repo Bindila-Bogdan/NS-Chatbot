@@ -137,7 +137,7 @@ class NSChatbotRAG(NSChatbot):
 
         if retrieved_documents is not None and len(retrieved_documents) != 0:
             # build the context string from retrieved documents
-            context = "\n\nHere is some relevant information:\n"
+            context = "\n\n**Here is some relevant information:**\n"
             for document_index, document in enumerate(retrieved_documents):
                 context += (
                     f'<document id="{document_index+1}">\n'

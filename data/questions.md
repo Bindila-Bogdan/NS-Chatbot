@@ -35,8 +35,8 @@
 
 - I want to take a train from Eindhoven in 15 minutes and I have already bought a ticket. Is there any train disruption? If so, how can I request a refund?
     - The chatbot is expected to mention about a disruption from Eindhoven to Venlo which led to a delay of approximately 287 minutes (nearly 5 hours) due to a collision and then to give details.
-- I want to take a train from Enschede in 15 minutes and I have already bought a ticket. Is there any train disruption? If there is a disruption, then let me know how can I get a refund.
-    - It should state that there are no disruptions. Hence it should not give details about refunding. This highlights the orchestration performed by the agent.
+- I want to take a train from Enschede in 15 minutes and I have already bought a ticket. Is there any train disruption? If there is a disruption, let me know how can I get a refund.
+    - It should state that there are no disruptions and mention about refund policies in the event they do occur. This two-part answer emphasizes the orchestration, as the second part of the answer is related to the disruption status.
 
 ### Out of scope questions
 
