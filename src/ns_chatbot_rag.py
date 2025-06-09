@@ -101,10 +101,21 @@ class NSChatbotRAG(NSChatbot):
                 print(f"{content}\nFrom: {document_name} at page {page_number}\n")
 
         retrieved_documents_metadata = "**Retrieved documents:**\n"
+        included_documents = set()
 
+        # include only unique document name - page number pairs
         for retrieved_document in retrieved_documents:
+            if (
+                retrieved_document["document_name"],
+                retrieved_document["page_number"],
+            ) in included_documents:
+                continue
+
             retrieved_documents_metadata += f"- {retrieved_document['document_name']}"
             retrieved_documents_metadata += f", page {retrieved_document['page_number']}\n"
+            included_documents.add(
+                (retrieved_document["document_name"], retrieved_document["page_number"])
+            )
 
         return retrieved_documents, retrieved_documents_metadata
 
