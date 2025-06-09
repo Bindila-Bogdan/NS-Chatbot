@@ -17,6 +17,7 @@ from config import (
     RETRIEVED_DOCUMENTS_NO,
     SYSTEM_PROMPT,
     CONVERSATION_HISTORY_LENGTH,
+    KNOWLEDGE_BASE_ID,
 )
 
 
@@ -68,7 +69,7 @@ class NSChatbotRAG(NSChatbot):
         # call the retrieve API
         try:
             response = self.agent_runtime_client.retrieve(
-                knowledgeBaseId=self.env_variables["knowledge_base_id"],
+                knowledgeBaseId=KNOWLEDGE_BASE_ID,
                 retrievalQuery={"text": query},
                 retrievalConfiguration={
                     "vectorSearchConfiguration": {"numberOfResults": RETRIEVED_DOCUMENTS_NO}

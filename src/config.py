@@ -21,6 +21,8 @@ SYSTEM_PROMPT = """You are a specialized AI assistant for NS (Dutch Railways) pa
 * "What is the refund policy for SNCF" -> **ACTION:** Politely refuse to answer to this question, as it is not related to NS.
 """
 
+# configuration for the knowledge base
+KNOWLEDGE_BASE_ID = "TZNEERBITU"
 
 # configuration for uploading the zip file of the Lambda function
 BUCKET_NAME = "ns-trains-disruptions"

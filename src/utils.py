@@ -27,7 +27,6 @@ def load_env_variables():
 
     env_variables["profile_name"] = os.getenv("AWS_PROFILE_NAME", None)
     env_variables["region_name"] = os.getenv("AWS_REGION_NAME", None)
-    env_variables["knowledge_base_id"] = os.getenv("KNOWLEDGE_BASE_ID", None)
 
     return env_variables
 
