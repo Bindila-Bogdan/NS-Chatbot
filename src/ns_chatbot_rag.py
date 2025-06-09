@@ -17,6 +17,7 @@ from config import (
     RETRIEVED_DOCUMENTS_NO,
     SYSTEM_PROMPT,
     CONVERSATION_HISTORY_LENGTH,
+    KNOWLEDGE_BASE_ID,
 )
 
 
@@ -68,7 +69,7 @@ class NSChatbotRAG(NSChatbot):
         # call the retrieve API
         try:
             response = self.agent_runtime_client.retrieve(
-                knowledgeBaseId=self.env_variables["knowledge_base_id"],
+                knowledgeBaseId=KNOWLEDGE_BASE_ID,
                 retrievalQuery={"text": query},
                 retrievalConfiguration={
                     "vectorSearchConfiguration": {"numberOfResults": RETRIEVED_DOCUMENTS_NO}
@@ -100,10 +101,21 @@ class NSChatbotRAG(NSChatbot):
                 print(f"{content}\nFrom: {document_name} at page {page_number}\n")
 
         retrieved_documents_metadata = "**Retrieved documents:**\n"
+        included_documents = set()
 
+        # include only unique document name - page number pairs
         for retrieved_document in retrieved_documents:
+            if (
+                retrieved_document["document_name"],
+                retrieved_document["page_number"],
+            ) in included_documents:
+                continue
+
             retrieved_documents_metadata += f"- {retrieved_document['document_name']}"
             retrieved_documents_metadata += f", page {retrieved_document['page_number']}\n"
+            included_documents.add(
+                (retrieved_document["document_name"], retrieved_document["page_number"])
+            )
 
         return retrieved_documents, retrieved_documents_metadata
 
@@ -137,7 +149,7 @@ class NSChatbotRAG(NSChatbot):
 
         if retrieved_documents is not None and len(retrieved_documents) != 0:
             # build the context string from retrieved documents
-            context = "\n\nHere is some relevant information:\n"
+            context = "\n\n**Here is some relevant information:**\n"
             for document_index, document in enumerate(retrieved_documents):
                 context += (
                     f'<document id="{document_index+1}">\n'
