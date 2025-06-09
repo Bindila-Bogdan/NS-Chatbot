@@ -22,28 +22,28 @@ It answers questions and provides the name and page of the documents used to gen
 
 The entire project was set up using the AWS web portal to accelerate development. Below are described the settings of the project components.
 
-**Foundational LLM**
+**Foundational LLM** \
 Both versions of the chatbot leverage Claude 3.5 Haiku.
 
-**Data Storage**
+**Data storage** \
 The PDF documents are stored in a S3 bucket.
 
-**Knowledge base**
+**Knowledge base** \
 It was set up to take get the documents from the S3 bucket and is represented by Amazon OpenSearch Serverless.
 The documents were divided into chunks of 500 words with an overlap of 20%.
 
-**Embedding model**
+**Embedding model** \
 It is represented by the Cohere Embed English V3 with an embedding size of 1024.
 
-**Agent**
+**Agent** \
 Uses the default orchestration and has 2 tools:
 1. knowledge base from where retrieves 5 chunks at a time
 2. group function represented by a Lambda function inside an action group
 
-**Lambda function**
+**Lambda function** \
 It is packaged as a ZIP including a helper script and a CSV file represented by 2024 [train disruptions data](https://www.rijdendetreinen.nl/en/open-data/disruptions) in the Netherlands and uploaded to S3 using Python. For a given station, if it exists in the dataset, it returns one disruption with the destination, duration in minutes, and cause. 
 
-**User Interface**
+**User interface** \
 The UI is developed with Streamlit and substitutes the CLI for a better experience.
 
 ### Testing
